@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Be First — learn what to do when every second matters.">
+    <title>Be First — Emergency Education</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.6.0/fonts/remixicon.css" rel="stylesheet">
+    <link rel="stylesheet" href="./src/output.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+
+    <style>
+        html { scroll-behavior: smooth; scroll-padding-top: 90px; }
+        body { font-family: "Outfit", sans-serif; background: #fff; color: #111; overflow-x: hidden; }
+        .display { font-family: "DM Serif Display", serif; }
+        .noise {
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.035'/%3E%3C/svg%3E");
+        }
+
+        .nav-scrolled {
+            background: rgba(255,255,255,.92) !important;
+            box-shadow: 0 10px 35px rgba(0,0,0,.07);
+            border-color: rgba(0,0,0,.07) !important;
+        }
+
+        .nav-dark {
+            background: rgba(23,23,245,.95) !important;
+            border-color: rgba(255,255,255,.15) !important;
+            box-shadow: 0 10px 35px rgba(0,0,0,.12);
+            color: #fff;
+        }
+
+        .nav-dark .nav-logo-box { background: #fff; }
+        .nav-dark .nav-logo-box img { filter: none; }
+        .nav-dark .nav-link { color: rgba(255,255,255,.75); }
+        .nav-dark .nav-link:hover,
+        .nav-dark .nav-link.active { color: #fff; }
+        .nav-dark .nav-cta { background: #fff; color: #1717F5; }
+        .nav-dark .nav-cta:hover { background: #92F0A8; color: #111; }
+        .nav-dark .menu-btn { background: #fff; color: #1717F5; }
+
+        .nav-light .nav-link { color: #111; }
+        .nav-light .nav-link:hover,
+        .nav-light .nav-link.active { color: #1717F5; }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(28px);
+            transition: opacity .8s ease, transform .8s cubic-bezier(.2,.8,.2,1);
+        }
+
+        .reveal.show { opacity: 1; transform: none; }
+
+        .line-card { transition: transform .35s ease, background .35s ease, border-color .35s ease; }
+        .line-card:hover { transform: translateX(8px); background: #fff; border-color: #1717F5; }
+
+        .faq-content {
+            display: grid;
+            grid-template-rows: 0fr;
+            transition: grid-template-rows .45s ease;
+        }
+
+        .faq-content > div { overflow: hidden; }
+        .faq-item.open .faq-content { grid-template-rows: 1fr; }
+        .faq-item.open .faq-plus {
+            transform: rotate(45deg);
+            background: #1717F5;
+            color: #fff;
+        }
+
+        .cursor-dot {
+            width: 8px;
+            height: 8px;
+            background: #1717F5;
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 100;
+            transform: translate(-50%,-50%);
+            transition: transform .08s ease;
+        }
+
+        .mobile-menu {
+            clip-path: circle(0% at calc(100% - 34px) 32px);
+            transition: clip-path .55s cubic-bezier(.77,0,.18,1);
+        }
+
+        .mobile-menu.open {
+            clip-path: circle(150% at calc(100% - 34px) 32px);
+        }
+
+        .menu-open { overflow: hidden; }
+
+        @media (max-width: 767px) {
+            .cursor-dot { display: none; }
+            .line-card:hover { transform: none; }
+        }
+
+        @media (max-width: 767px) {
+            .feature-card {
+                width: 100% !important;
+            }
+
+            .feature-text {
+                opacity: 1 !important;
+                width: 55% !important;
+            }
+
+            .feature-card > div:last-child {
+                width: 45% !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="cursorDot" class="cursor-dot"></div>
+
+    <!-- ==================== NAVBAR ==================== -->
+    <header id="navbar" class="fixed inset-x-0 top-0 z-50 border-b border-transparent bg-transparent text-[#111] transition-all duration-500">
+        <div class="mx-auto max-w-7xl px-5 sm:px-7 lg:px-10 py-4">
+            <div class="flex items-center justify-between">
+                <a href="#beranda" class="flex items-center gap-3 group" aria-label="Be First Home">
+                    <div class="nav-logo-box flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center overflow-hidden rounded-xl bg-[#1717F5] transition-transform duration-300 group-hover:rotate-[-5deg]">
+                        <img src="assets/images/logo.png" alt="Be First Logo" class="h-12 w-12 object-contain">
+                    </div>
+                    <span class="text-lg font-bold tracking-tight sm:text-xl">Be First</span>
+                </a>
+
+                <nav class="hidden items-center gap-7 text-sm font-medium lg:flex xl:gap-8">
+                    <a href="#beranda" class="nav-link active transition-colors">Beranda</a>
+                    <a href="#masalah" class="nav-link transition-colors">Masalah</a>
+                    <a href="#solusi" class="nav-link transition-colors">Solusi</a>
+                    <a href="#fitur" class="nav-link transition-colors">Fitur</a>
+                    <a href="#pertanyaan" class="nav-link transition-colors">Pertanyaan</a>
+                    <a href="#testimoni" class="nav-link transition-colors">Testimoni</a>
+                </nav>
+
+                <div class="flex items-center gap-3">
+                    <a href="category.html" class="nav-cta hidden items-center gap-2 rounded-full bg-[#111] px-5 py-3 text-sm font-semibold text-white transition-all duration-300 hover:bg-[#1717F5] sm:flex">
+                        Mulai Belajar <i class="ri-arrow-right-up-line"></i>
+                    </a>
+
+                    <button id="menuBtn" class="menu-btn flex h-11 w-11 items-center justify-center rounded-full bg-[#111] text-white lg:hidden" aria-label="Open menu">
+                        <i class="ri-menu-4-line text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- ==================== MOBILE MENU ==================== -->
+
+    <div id="mobileMenu" class="mobile-menu fixed inset-0 z-40 bg-[#1717F5] text-white lg:hidden">
+        <div class="flex h-full flex-col justify-between px-6 pb-8 pt-28 sm:px-8">
+            <div>
+                <p class="mb-8 text-xs font-semibold uppercase tracking-[.25em] text-white/50">Navigate</p>
+
+                <nav class="flex flex-col gap-4 sm:gap-5">
+                    <a href="#beranda" class="mobile-link text-4xl font-semibold tracking-tight sm:text-5xl">Beranda</a>
+                    <a href="#masalah" class="mobile-link text-4xl font-semibold tracking-tight sm:text-5xl">Masalah</a>
+                    <a href="#solusi" class="mobile-link text-4xl font-semibold tracking-tight sm:text-5xl">Solusi</a>
+                    <a href="#fitur" class="mobile-link text-4xl font-semibold tracking-tight sm:text-5xl">Fitur</a>
+                    <a href="#pertanyaan" class="mobile-link text-4xl font-semibold tracking-tight sm:text-5xl">Pertanyaan</a>
+                    <a href="#testimoni" class="mobile-link text-4xl font-semibold tracking-tight sm:text-5xl">Testimoni</a>
+                </nav>
+            </div>
+
+            <div class="flex items-end justify-between gap-5 border-t border-white/20 pt-6">
+                <div>
+                    <p class="text-sm text-white/60">Emergency education</p>
+                    <p class="mt-1 font-semibold">Learn. Practice. Be First.</p>
+                </div>
+
+                <button id="closeMenu" class="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-white text-[#1717F5]" aria-label="Close menu">
+                    <i class="star-line text-2xl"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+    <main>
+        <!-- ==================== HERO ==================== -->
+        <section id="beranda" data-nav-theme="light" class="bg-white pb-20 pt-28 sm:pt-32 lg:pt-36">
+            <div class="mx-auto max-w-7xl px-5 sm:px-7 lg:px-10">
+                <div class="relative">
+                    <div class="overflow-hidden rounded-xl bg-white shadow-[0_0_50px_rgba(0,0,0,0.12)]">
+                        <video class="h-[380px] w-full object-cover sm:h-[500px] lg:h-[650px]" autoplay muted loop playsinline>
+                            <source src="assets/videos/Scene-2.mp4" type="video/mp4">
+                        </video>
+                    </div>
+
+                    <div class="relative mt-5 w-full rounded-xl bg-white px-6 py-10 shadow-[0_8px_24px_rgba(0,0,0,0.10)] sm:px-8 sm:py-12 lg:absolute lg:right-10 lg:top-1/2 lg:mt-0 lg:w-[520px] lg:-translate-y-1/2 lg:px-10 lg:py-16">
+                        <div>
+                            <div class="flex flex-wrap items-center gap-2">
+                                <div class="relative">
+                                    <h1 class="text-[30px] font-bold leading-none tracking-tight text-slate-900 sm:text-[34px]">
+                                        Tahu Harus
+                                    </h1>
+                                    <div class="absolute -bottom-1.5 left-16 h-1 w-[85px] rounded-full bg-[#92F0A8]"></div>
+                                </div>
+
+                                <span class="rounded-full border-2 border-[#6D6BFF] px-3 py-1 text-[30px] font-bold leading-none tracking-tight text-slate-900 sm:text-[34px]">
+                                    Berbuat Apa
+                                </span>
+                            </div>
+
+                            <div class="mt-2 flex items-center">
+                                <span class="rounded-full border-2 border-[#6D6BFF] px-3 py-1 text-[30px] font-bold leading-none tracking-tight text-slate-900 sm:text-[34px]">
+                                    Saat Darurat
+                                </span>
+                                <div class="-ml-2 flex h-9 w-9 items-center justify-center rounded-full bg-[#0000ff] text-xl font-bold text-white sm:h-10 sm:w-10">
+                                    ?
+                                </div>
+                            </div>
+                        </div>
+
+                        <p class="mt-6 max-w-[420px] text-[15px] leading-6 text-slate-600">
+                            Pelajari pertolongan pertama dengan panduan sederhana dan mudah dipahami, agar kamu lebih siap membantu diri sendiri maupun orang lain.
+                        </p>
+
+                        <div class="mt-7 flex flex-wrap gap-3">
+                            <a href="category.html" class="inline-flex items-center gap-2 rounded-full bg-[#0000ff] px-5 py-2.5 text-sm font-medium text-white transition hover:bg-[#1D32D8]">
+                                Mulai Belajar
+                                <i class="ri-arrow-right-line"></i>
+                            </a>
+
+                            <a href="#fitur" class="rounded-full bg-slate-200 px-5 py-2.5 text-sm font-medium text-slate-800 transition hover:bg-slate-300">
+                                Lihat Materi
+                            </a>
+                        </div>
+
+                        <div class="mt-12 h-px w-full bg-slate-200"></div>
+
+                        <div class="mt-5 flex items-center">
+                            <div class="flex -space-x-2">
+                                <div class="flex h-8 w-8 items-center justify-center rounded-full border-2 border-white bg-[#2383FF] text-xs text-white">E</div>
+                                <div class="flex h-8 w-8 items-center justify-center rounded-full border-2 border-white bg-[#7C3AED] text-xs text-white">S</div>
+                                <div class="flex h-8 w-8 items-center justify-center rounded-full border-2 border-white bg-[#14532D] text-xs text-white">L</div>
+                                <div class="flex h-8 w-8 items-center justify-center rounded-full border-2 border-white bg-slate-300 text-[10px] font-medium text-slate-700">+10</div>
+                            </div>
+
+                            <div class="mx-4 h-7 w-px bg-slate-300"></div>
+
+                            <p class="max-w-[200px] text-[11px] leading-4 text-slate-500">
+                                Bersama-sama belajar menjadi lebih siap menghadapi keadaan darurat.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== MASALAH ==================== -->
+        <section id="masalah" data-nav-theme="light" class="bg-white py-20 sm:py-24">
+            <div class="mx-auto max-w-7xl px-5 sm:px-7 lg:px-10">
+                <div class="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
+                    <div class="reveal">
+                        <span class="text-sm font-semibold uppercase tracking-widest text-[#0000ff]">01 / Masalah</span>
+
+                        <h2 class="mt-5 text-3xl font-bold leading-tight sm:text-4xl">
+                            Ingin <span class="text-[#0000ff]">Membantu</span> Tapi <span class="text-[#0000ff]">Bingung</span>, Harus Mulai Dari Mana.
+                        </h2>
+
+                        <p class="mt-8 leading-7 text-slate-600">
+                            Selama <span class="font-semibold text-black">Golden Minutes,</span> setiap detik berarti. Be First membantu mengubah keraguan menjadi keberanian lewat pembelajaran yang sederhana dan praktis.
+                        </p>
+                    </div>
+
+                    <div class="reveal flex items-center justify-center">
+                        <img src="assets/images/banner01.png" alt="Beruang Be First" class="h-[550px] w-auto object-contain drop-shadow-xl transition-transform duration-500 hover:-translate-y-3 sm:h-[550px] lg:h-[650px]">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== SOLUSI HEADER ==================== -->
+        <div class="bg-white px-5 pb-10 pt-4 text-center sm:pb-12">
+            <span class="text-sm font-semibold uppercase tracking-widest text-[#0000ff]">02 / Solusi</span>
+            <h2 class="mt-5 text-4xl font-bold leading-tight text-slate-900 sm:text-5xl">
+                Bagaimana BeFirst <span class="text-[#0000ff]">Membantu</span>
+            </h2>
+        </div>
+
+        <!-- ==================== SOLUSI ==================== -->
+        <section id="solusi" data-nav-theme="dark" class="bg-[#1717f5] py-12 sm:py-16">
+            <div class="mx-auto max-w-7xl px-5 sm:px-7 lg:px-10">
+                <div class="relative mx-auto max-w-[1600px]">
+                    <button type="button" class="custom-prev absolute left-0 top-1/2 z-30 hidden h-12 w-12 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-white/80 shadow-md transition hover:scale-105 sm:flex [&_svg]:stroke-black">
+                        <i data-lucide="chevron-left" class="h-6 w-6"></i>
+                    </button>
+
+                    <button type="button" class="custom-next absolute right-0 top-1/2 z-30 hidden h-12 w-12 translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-white/80 shadow-md transition hover:scale-105 sm:flex [&_svg]:stroke-black">
+                        <i data-lucide="chevron-right" class="h-6 w-6"></i>
+                    </button>
+
+                    <div class="swiper featureSwiper">
+                        <div class="swiper-wrapper">
+
+                            <!-- SLIDE 1 -->
+                            <div class="swiper-slide">
+                                <div class="grid gap-2 md:grid-cols-2">
+                                    <div class="h-[300px] overflow-hidden rounded-xl bg-white sm:h-[400px]">
+                                        <img src="assets/images/banner02a.png" alt="Bangun Kepercayaan Diri" class="h-full w-full object-cover">
+                                    </div>
+
+                                    <div class="relative flex h-[300px] items-center overflow-hidden rounded-xl bg-white px-7 sm:h-[400px] sm:px-10">
+                                        <div class="absolute -right-40 -top-52 h-[420px] w-[420px] rounded-full bg-[#95F0C0]/80 blur-[60px]"></div>
+
+                                        <div class="relative z-10">
+                                            <h3 class="text-2xl font-bold leading-tight text-slate-900">
+                                                Bangun <span class="text-[#1717f5]">Kepercayaan Diri</span>
+                                            </h3>
+                                            <p class="mt-4 max-w-[330px] leading-6 text-slate-700">
+                                                Latih pengetahuanmu lewat skenario dan kuis singkat agar lebih siap menghadapi keadaan darurat.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- SLIDE 2 -->
+                            <div class="swiper-slide">
+                                <div class="grid gap-2 md:grid-cols-2">
+                                    <div class="h-[300px] overflow-hidden rounded-xl bg-white sm:h-[400px]">
+                                        <img src="assets/images/banner02b.png" alt="Siap Mengambil Langkah Pertama" class="h-full w-full object-cover">
+                                    </div>
+
+                                    <div class="relative flex h-[300px] items-center overflow-hidden rounded-xl bg-white px-7 sm:h-[400px] sm:px-10">
+                                        <div class="absolute -right-40 -top-52 h-[420px] w-[420px] rounded-full bg-[#95F0C0]/80 blur-[60px]"></div>
+
+                                        <div class="relative z-10">
+                                            <h3 class="text-2xl font-bold leading-tight text-slate-900">
+                                                Siap Mengambil <span class="text-[#1717f5]">Langkah Pertama</span>
+                                            </h3>
+                                            <p class="mt-4 max-w-[330px] leading-6 text-slate-700">
+                                                Kenali tindakan awal yang tepat sebelum bantuan medis tiba.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- SLIDE 3 -->
+                            <div class="swiper-slide">
+                                <div class="grid gap-2 md:grid-cols-2">
+                                    <div class="h-[300px] overflow-hidden rounded-xl bg-white sm:h-[400px]">
+                                        <img src="assets/images/banner02c.png" alt="Bekali Diri dengan Pengetahuan" class="h-full w-full object-cover">
+                                    </div>
+
+                                    <div class="relative flex h-[300px] items-center overflow-hidden rounded-xl bg-white px-7 sm:h-[400px] sm:px-10">
+                                        <div class="absolute -right-40 -top-52 h-[420px] w-[420px] rounded-full bg-[#95F0C0]/80 blur-[60px]"></div>
+
+                                        <div class="relative z-10">
+                                            <h3 class="text-2xl font-bold leading-tight text-slate-900">
+                                                Bekali Diri dengan <span class="text-[#1717f5]">Pengetahuan</span>
+                                            </h3>
+                                            <p class="mt-4 max-w-[330px] leading-6 text-slate-700">
+                                                Pelajari dasar pertolongan pertama melalui materi sederhana dan visual yang mudah dipahami.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== FITUR ==================== -->
+        <section id="fitur" class="bg-[#F7F8FC] py-24">
+            <div class="mx-auto max-w-7xl px-6">
+
+                <!-- Header -->
+                <div class="max-w-xl">
+                    <span class="text-[#0000ff] font-semibold text-sm tracking-widest uppercase">
+                        03 / Fitur
+                    </span>
+
+                    <h2 class="mt-3 text-5xl font-bold text-slate-900">
+                        Dibuat untuk
+                        <span class="text-[#0000ff]">Belajar Lebih Baik</span>
+                    </h2>
+
+                    <p class="mt-5 text-slate-600 leading-7">
+                        Temukan berbagai fitur yang membuat belajar pertolongan
+                        pertama lebih mudah, menyenangkan, dan mudah diingat.
+                    </p>
+                </div>
+
+                <!-- Cards -->
+                <div id="featureCards" class="flex flex-wrap justify-center gap-8 pt-10">
+
+                    <!-- CARD 1 -->
+                    <div class="feature-card group relative h-[370px] w-[280px] overflow-hidden rounded-xl bg-white shadow-[0_4px_20px_rgba(0,0,0,0.12)] transition-all duration-500" data-card="1">
+                        <!-- TEXT -->
+                        <div class="feature-text absolute left-0 top-0 flex h-full w-[330px] flex-col justify-center px-7 opacity-0 transition-all duration-300">
+                            <h3 class="text-2xl font-semibold text-slate-900">Pelajaran Interaktif</h3>
+                            <p class="mt-4 text-sm leading-6 text-slate-600">
+                                Pelajari pertolongan pertama melalui materi visual
+                                yang mudah dipahami dan menyenangkan.
+                            </p>
+                        </div>
+
+                        <!-- IMAGE -->
+                        <div class="absolute right-0 top-0 h-full w-[280px] p-5">
+                            <img src="assets/images/banner03a.png" alt="Pelajaran interaktif" class="h-full w-full object-contain">
+                        </div>
+                    </div>
+
+                    <!-- CARD 2 -->
+                    <div class="feature-card group relative h-[370px] w-[580px] overflow-hidden rounded-xl bg-white shadow-[0_4px_20px_rgba(0,0,0,0.12)] transition-all duration-500" data-card="2">
+                        <!-- TEXT -->
+                        <div class="feature-text absolute left-0 top-0 flex h-full w-[330px] flex-col justify-center px-7 opacity-100 transition-all duration-300">
+                            <h3 class="text-2xl font-semibold text-slate-900">Kuis Menarik</h3>
+                            <p class="mt-4 text-sm leading-6 text-slate-600">
+                                Uji kemampuanmu dengan kuis interaktif setelah
+                                menyelesaikan setiap materi.
+                            </p>
+                        </div>
+
+                        <!-- IMAGE -->
+                        <div class="absolute right-0 top-0 h-full w-[280px] p-5">
+                            <img src="assets/images/banner03b.png" alt="Kuis menarik" class="h-full w-full object-contain">
+                        </div>
+                    </div>
+
+                    <!-- CARD 3 -->
+                    <div class="feature-card group relative h-[370px] w-[280px] overflow-hidden rounded-xl bg-white shadow-[0_4px_20px_rgba(0,0,0,0.12)] transition-all duration-500" data-card="3">
+                        <!-- TEXT -->
+                        <div class="feature-text absolute left-0 top-0 flex h-full w-[330px] flex-col justify-center px-7 opacity-0 transition-all duration-300">
+                            <h3 class="text-2xl font-semibold text-slate-900">Pencapaian Baru</h3>
+                            <p class="mt-4 text-sm leading-6 text-slate-600">
+                                Raih badge dan penghargaan saat berhasil
+                                menyelesaikan materi pembelajaran.
+                            </p>
+                        </div>
+
+                        <!-- IMAGE -->
+                        <div class="absolute right-0 top-0 h-full w-[280px] p-5">
+                            <img src="assets/images/banner03c.png" alt="Pencapaian baru" class="h-full w-full object-contain">
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== FAQ ==================== -->
+        <section id="pertanyaan" data-nav-theme="light" class="py-20 sm:py-32 lg:py-40">
+            <div class="mx-auto max-w-7xl px-5 sm:px-7 lg:px-10">
+                <div class="grid gap-12 lg:grid-cols-[.8fr_1.2fr] lg:gap-24">
+                    <div class="reveal">
+                        <span class="text-sm font-semibold uppercase tracking-widest text-[#0000ff]">04 / Pertanyaan</span>
+
+                        <h2 class="mt-5 text-3xl font-bold sm:mt-6 sm:text-4xl lg:text-5xl">
+                            Pertanyaan<br>yang mungkin<br><span class="text-[#0000ff]">kamu punya.</span>
+                        </h2>
+
+                        <p class="mt-7 max-w-md leading-7 text-slate-600 sm:mt-8">
+                            Masih penasaran? Temukan jawaban dari beberapa pertanyaan yang sering ditanyakan sebelum mulai belajar bersama Be First.
+                        </p>
+                    </div>
+
+                    <div class="space-y-3 reveal">
+                        <div class="faq-item border-t border-black/15">
+                            <button class="faq-btn flex w-full items-center justify-between gap-5 py-6 text-left sm:py-7">
+                                <span class="text-lg font-semibold sm:text-xl">Apa itu Be First?</span>
+                                <span class="faq-plus flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-black/5 text-xl transition-all duration-300">+</span>
+                            </button>
+                            <div class="faq-content">
+                                <div>
+                                    <p class="max-w-2xl pb-6 text-sm leading-7 text-black/55 sm:pb-7 sm:text-base">
+                                        Be First adalah platform pembelajaran interaktif yang membantu memahami dasar-dasar respons dalam keadaan darurat melalui materi, skenario, dan aktivitas yang sederhana.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="faq-item border-t border-black/15">
+                            <button class="faq-btn flex w-full items-center justify-between gap-5 py-6 text-left sm:py-7">
+                                <span class="text-lg font-semibold sm:text-xl">Kenapa beberapa menit pertama itu penting?</span>
+                                <span class="faq-plus flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-black/5 text-xl transition-all duration-300">+</span>
+                            </button>
+                            <div class="faq-content">
+                                <div>
+                                    <p class="max-w-2xl pb-6 text-sm leading-7 text-black/55 sm:pb-7 sm:text-base">
+                                        Dalam keadaan darurat, tindakan yang dilakukan sebelum bantuan profesional datang dapat memberikan perbedaan penting. Mengetahui respons yang tepat dapat membantu mengurangi keterlambatan dalam mendapatkan pertolongan.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="faq-item border-t border-black/15">
+                            <button class="faq-btn flex w-full items-center justify-between gap-5 py-6 text-left sm:py-7">
+                                <span class="text-lg font-semibold sm:text-xl">Siapa yang bisa menggunakan Be First?</span>
+                                <span class="faq-plus flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-black/5 text-xl transition-all duration-300">+</span>
+                            </button>
+                            <div class="faq-content">
+                                <div>
+                                    <p class="max-w-2xl pb-6 text-sm leading-7 text-black/55 sm:pb-7 sm:text-base">
+                                        Be First ditujukan untuk siapa saja yang ingin mempelajari dasar-dasar respons dalam keadaan darurat, terutama pelajar dan masyarakat umum.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="faq-item border-t border-black/15">
+                            <button class="faq-btn flex w-full items-center justify-between gap-5 py-6 text-left sm:py-7">
+                                <span class="text-lg font-semibold sm:text-xl">Apakah harus punya pengalaman medis?</span>
+                                <span class="faq-plus flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-black/5 text-xl transition-all duration-300">+</span>
+                            </button>
+                            <div class="faq-content">
+                                <div>
+                                    <p class="max-w-2xl pb-6 text-sm leading-7 text-black/55 sm:pb-7 sm:text-base">
+                                        Tidak. Be First menggunakan penjelasan sederhana dan skenario praktis agar pemula dapat memahami langkah-langkah dasar dengan lebih mudah.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="faq-item border-y border-black/15">
+                            <button class="faq-btn flex w-full items-center justify-between gap-5 py-6 text-left sm:py-7">
+                                <span class="text-lg font-semibold sm:text-xl">Apakah Be First menggantikan tenaga medis?</span>
+                                <span class="faq-plus flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-black/5 text-xl transition-all duration-300">+</span>
+                            </button>
+                            <div class="faq-content">
+                                <div>
+                                    <p class="max-w-2xl pb-6 text-sm leading-7 text-black/55 sm:pb-7 sm:text-base">
+                                        Tidak. Be First adalah platform edukasi yang membantu pengguna mengambil tindakan awal yang tepat sambil menunggu bantuan medis profesional.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== TESTIMONI ==================== -->
+        <section id="testimoni" data-nav-theme="light" class="bg-[#F7F8FC] py-20 sm:py-28">
+            <div class="mx-auto max-w-7xl px-5 sm:px-7 lg:px-10">
+                <div class="text-center">
+                    <span class="text-sm font-semibold uppercase tracking-widest text-[#0000ff]">05 / Testimoni</span>
+
+                    <h2 class="mt-5 text-4xl font-bold leading-tight text-slate-900 sm:text-5xl">
+                        Apa <span class="text-[#0000ff]">Kata</span> Orang Tentang <span class="text-[#0000ff]">BeFirst</span>?
+                    </h2>
+                </div>
+
+                <div class="mt-12 grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+                    <!-- CARD -->
+                    <div class="group relative overflow-hidden rounded-xl bg-white p-7 shadow-[0_8px_30px_rgba(0,0,0,0.04)] transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_20px_50px_rgba(0,0,0,0.10)] sm:p-8">
+                        <div class="absolute -bottom-20 -left-20 h-52 w-52 rounded-full bg-[#0000ff]/40 blur-[80px] opacity-0 transition-all duration-700 group-hover:opacity-100"></div>
+
+                        <div class="relative z-10 flex min-h-[300px] flex-col">
+                            <p class="flex-1 leading-7 text-slate-600">
+                                “Aku suka karena materinya nggak terlalu panjang. Jadi lebih enak buat dipelajari.”
+                            </p>
+
+                            <div class="mt-8 flex items-center gap-4">
+                                <img src="assets/images/testimoni1.png" alt="Rania" class="h-12 w-12 rounded-full object-cover">
+                                <div>
+                                    <p class="text-sm text-slate-500">Pelajar</p>
+                                    <h4 class="font-semibold text-slate-900">Rania Kinanti A.</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="group relative overflow-hidden rounded-xl bg-white p-7 shadow-[0_8px_30px_rgba(0,0,0,0.04)] transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_20px_50px_rgba(0,0,0,0.10)] sm:p-8">
+                        <div class="absolute -bottom-20 -left-20 h-52 w-52 rounded-full bg-[#0000ff]/40 blur-[80px] opacity-0 transition-all duration-700 group-hover:opacity-100"></div>
+
+                        <div class="relative z-10 flex min-h-[300px] flex-col">
+                            <p class="flex-1 leading-7 text-slate-600">
+                                “Saya jadi tahu pertolongan pertama bukan cuma soal tahu caranya, tapi juga berani mengambil tindakan yang tepat.”
+                            </p>
+
+                            <div class="mt-8 flex items-center gap-4">
+                                <img src="assets/images/testimoni2.png" alt="Dimas" class="h-12 w-12 rounded-full object-cover">
+                                <div>
+                                    <p class="text-sm text-slate-500">Mahasiswa</p>
+                                    <h4 class="font-semibold text-slate-900">Dimas Renan</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="group relative overflow-hidden rounded-xl bg-white p-7 shadow-[0_8px_30px_rgba(0,0,0,0.04)] transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_20px_50px_rgba(0,0,0,0.10)] sm:p-8">
+                        <div class="absolute -bottom-20 -left-20 h-52 w-52 rounded-full bg-[#0000ff]/40 blur-[80px] opacity-0 transition-all duration-700 group-hover:opacity-100"></div>
+
+                        <div class="relative z-10 flex min-h-[300px] flex-col">
+                            <p class="flex-1 leading-7 text-slate-600">
+                                “Ternyata banyak hal kecil dalam situasi darurat yang sebelumnya saya nggak tahu. Setelah belajar, saya jadi lebih aware.”
+                            </p>
+
+                            <div class="mt-8 flex items-center gap-4">
+                                <img src="assets/images/testimoni3.png" alt="Intan" class="h-12 w-12 rounded-full object-cover">
+                                <div>
+                                    <p class="text-sm text-slate-500">Pekerja</p>
+                                    <h4 class="font-semibold text-slate-900">Intan Ayu Kartika</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="group relative overflow-hidden rounded-xl bg-white p-7 shadow-[0_8px_30px_rgba(0,0,0,0.04)] transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_20px_50px_rgba(0,0,0,0.10)] sm:p-8">
+                        <div class="absolute -bottom-20 -left-20 h-52 w-52 rounded-full bg-[#0000ff]/40 blur-[80px] opacity-0 transition-all duration-700 group-hover:opacity-100"></div>
+
+                        <div class="relative z-10 flex min-h-[300px] flex-col">
+                            <p class="flex-1 leading-7 text-slate-600">
+                                “Informasi pertolongan pertama sebenarnya banyak di internet, tapi sering tersebar di mana-mana. Sama BeFirst jadi lebih terarah dan mudah dipelajari.”
+                            </p>
+
+                            <div class="mt-8 flex items-center gap-4">
+                                <img src="assets/images/testimoni4.png" alt="Uzair" class="h-12 w-12 rounded-full object-cover">
+                                <div>
+                                    <p class="text-sm text-slate-500">Mahasiswa</p>
+                                    <h4 class="font-semibold text-slate-900">Uzair Hatta</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- ==================== FOOTER ==================== -->
+    <footer class="bg-[#0909fa]">
+        <section class="overflow-hidden">
+            <div class="mx-auto max-w-7xl px-5 py-16 sm:px-7 sm:py-20 lg:px-10">
+                <div class="grid items-center gap-10 lg:grid-cols-2">
+                    <div>
+                        <h2 class="text-4xl font-bold leading-tight text-white lg:text-5xl">Pertama untuk Membantu</h2>
+
+                        <p class="mt-6 max-w-lg leading-8 text-white/80">
+                            Pengetahuanmu bisa membantu orang lain. Belajar bersama BeFirst untuk mengambil langkah awal pertolongan yang tepat dalam situasi darurat.
+                        </p>
+
+                        <a href="category.html" class="mt-10 inline-flex items-center gap-2 rounded-full bg-white px-8 py-4 font-semibold text-[#0000ff] transition duration-300 hover:scale-105">
+                            <span>Mulai Belajar</span>
+                            <i class="ri-arrow-right-line"></i>
+                        </a>
+                    </div>
+
+                    <div class="flex justify-center lg:justify-end">
+                        <img src="assets/images/be bear.png" alt="Be First Bear" class="w-60 transition duration-500 hover:-translate-y-2 sm:w-72 lg:mr-12">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="rounded-t-xl bg-black">
+            <div class="mx-auto max-w-7xl px-5 py-12 sm:px-7 sm:py-16 lg:px-10">
+                <div class="grid gap-12 lg:grid-cols-5 lg:gap-20">
+                    <div class="lg:col-span-2">
+                        <div class="flex items-center gap-4">
+                            <div class="flex h-14 w-14 items-center justify-center rounded-3xl bg-[#0000ff]">
+                                <img src="assets/images/logo.png" alt="Be First Logo" class="w-14">
+                            </div>
+                            <h2 class="text-3xl font-bold text-white">Be First</h2>
+                        </div>
+
+                        <form id="newsletter" class="mt-8 flex">
+                            <input id="emailInput" type="email" placeholder="Masukkan email.." required class="min-w-0 flex-1 rounded-l-xl bg-white px-5 py-3 outline-none">
+                            <button type="submit" class="rounded-r-xl bg-[#0000ff] px-5 text-white transition duration-300 hover:bg-blue-700 sm:px-6">Langganan</button>
+                        </form>
+
+                        <p id="newsletterMsg" class="mt-3 hidden text-sm text-white/70">Terima kasih sudah berlangganan!</p>
+                    </div>
+
+                    <div>
+                        <h4 class="mb-6 text-lg font-semibold text-white">Navigasi</h4>
+                        <ul class="space-y-4 text-gray-400">
+                            <li><a href="#beranda" class="transition duration-300 hover:text-white">Beranda</a></li>
+                            <li><a href="#masalah" class="transition duration-300 hover:text-white">Masalah</a></li>
+                            <li><a href="#solusi" class="transition duration-300 hover:text-white">Solusi</a></li>
+                            <li><a href="#fitur" class="transition duration-300 hover:text-white">Fitur</a></li>
+                            <li><a href="#pertanyaan" class="transition duration-300 hover:text-white">Pertanyaan</a></li>
+                            <li><a href="#testimoni" class="transition duration-300 hover:text-white">Testimoni</a></li>
+                        </ul>
+                    </div>
+
+                    <div>
+                        <h4 class="mb-6 text-lg font-semibold text-white">Resources</h4>
+                        <ul class="space-y-4 text-gray-400">
+                            <li><a href="#solusi" class="transition duration-300 hover:text-white">First Aid Guide</a></li>
+                            <li><a href="#fitur" class="transition duration-300 hover:text-white">Quiz</a></li>
+                            <li><a href="#testimoni" class="transition duration-300 hover:text-white">Testimonials</a></li>
+                            <li><a href="#pertanyaan" class="transition duration-300 hover:text-white">FAQ</a></li>
+                        </ul>
+                    </div>
+
+                    <div>
+                        <h4 class="mb-6 text-lg font-semibold text-white">Follow Us</h4>
+                        <ul class="space-y-4 text-gray-400">
+                            <li><a href="#" class="transition duration-300 hover:text-white">Instagram</a></li>
+                            <li><a href="#" class="transition duration-300 hover:text-white">Facebook</a></li>
+                            <li><a href="#" class="transition duration-300 hover:text-white">TikTok</a></li>
+                            <li><a href="#" class="transition duration-300 hover:text-white">YouTube</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="mt-12 flex flex-col items-center justify-between gap-4 border-t border-white/10 pt-8 text-center lg:mt-16 lg:flex-row lg:text-left">
+                    <p class="text-gray-500">© 2026 Be First. All rights reserved.</p>
+
+                    <div class="flex gap-6 text-gray-500 sm:gap-8">
+                        <a href="#" class="transition duration-300 hover:text-white">Privacy Policy</a>
+                        <a href="#" class="transition duration-300 hover:text-white">Terms of Service</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </footer>
+
+    <!-- ==================== SCRIPTS ==================== -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <script>
+        lucide.createIcons();
+
+        // ==================== SWIPER ====================
+        new Swiper(".featureSwiper", {
+            slidesPerView: 1,
+            spaceBetween: 0,
+            loop: true,
+            speed: 600,
+            navigation: {
+                nextEl: ".custom-next",
+                prevEl: ".custom-prev"
+            }
+        });
+
+        // ==================== NAVBAR ====================
+        const navbar = document.getElementById("navbar");
+        const menuBtn = document.getElementById("menuBtn");
+        const mobileMenu = document.getElementById("mobileMenu");
+        const closeMenu = document.getElementById("closeMenu");
+        const navLinks = [...document.querySelectorAll(".nav-link")];
+        const sections = [...document.querySelectorAll("main section[id]")];
+
+        function updateNavbar(section = null) {
+            const isScrolled = window.scrollY > 20;
+            const theme = section?.dataset.navTheme || "light";
+
+            navbar.classList.toggle("nav-scrolled", isScrolled && theme === "light");
+            navbar.classList.toggle("nav-dark", theme === "dark");
+            navbar.classList.toggle("nav-light", theme === "light");
+        }
+
+        function setActiveNav(id) {
+            navLinks.forEach(link => {
+                link.classList.toggle("active", link.getAttribute("href") === `#${id}`);
+            });
+        }
+
+        const navObserver = new IntersectionObserver(entries => {
+            const visible = entries
+                .filter(entry => entry.isIntersecting)
+                .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+
+            if (!visible) return;
+
+            setActiveNav(visible.target.id);
+            updateNavbar(visible.target);
+        }, {
+            rootMargin: "-25% 0px -60% 0px",
+            threshold: [0, .25, .5, .75, 1]
+        });
+
+        sections.forEach(section => navObserver.observe(section));
+
+        window.addEventListener("scroll", () => {
+            const current = sections.find(section => {
+                const rect = section.getBoundingClientRect();
+                return rect.top <= 120 && rect.bottom >= 120;
+            });
+
+            updateNavbar(current);
+        }, { passive: true });
+
+        updateNavbar(sections[0]);
+
+        // ==================== MOBILE MENU ====================
+        function toggleMenu(open) {
+            mobileMenu.classList.toggle("open", open);
+            document.body.classList.toggle("menu-open", open);
+            menuBtn.innerHTML = open
+                ? '<i class="ri-close-line text-xl"></i>'
+                : '<i class="ri-menu-4-line text-xl"></i>';
+        }
+
+        menuBtn.addEventListener("click", () => {
+            toggleMenu(!mobileMenu.classList.contains("open"));
+        });
+
+        closeMenu.addEventListener("click", () => toggleMenu(false));
+
+        document.querySelectorAll(".mobile-link").forEach(link => {
+            link.addEventListener("click", () => toggleMenu(false));
+        });
+
+        // ==================== REVEAL ====================
+        const revealObserver = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add("show");
+                    revealObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: .12 });
+
+        document.querySelectorAll(".reveal").forEach(el => {
+            revealObserver.observe(el);
+        });
+
+        // ==================== FAQ ====================
+        document.querySelectorAll(".faq-btn").forEach(button => {
+            button.addEventListener("click", () => {
+                const item = button.closest(".faq-item");
+
+                document.querySelectorAll(".faq-item").forEach(other => {
+                    if (other !== item) other.classList.remove("open");
+                });
+
+                item.classList.toggle("open");
+            });
+        });
+
+        // ==================== FEATURE CARDS ====================
+        const featureContainer = document.getElementById("featureCards");
+        const featureCards = [...document.querySelectorAll(".feature-card")];
+
+        function openCard(activeCard) {
+            featureCards.forEach(card => {
+                const text = card.querySelector(".feature-text");
+                const isActive = card === activeCard;
+
+                if (window.innerWidth >= 1024) {
+                    card.classList.toggle("lg:w-[580px]", isActive);
+                    card.classList.toggle("lg:w-[280px]", !isActive);
+                    text.classList.toggle("opacity-100", isActive);
+                    text.classList.toggle("opacity-0", !isActive);
+                }
+            });
+        }
+
+        openCard(featureCards[1]);
+
+        featureCards.forEach(card => {
+            card.addEventListener("mouseenter", () => openCard(card));
+        });
+
+        featureContainer.addEventListener("mouseleave", () => {
+            openCard(featureCards[1]);
+        });
+
+        // ==================== CURSOR ====================
+        const cursor = document.getElementById("cursorDot");
+
+        window.addEventListener("mousemove", e => {
+            cursor.style.left = `${e.clientX}px`;
+            cursor.style.top = `${e.clientY}px`;
+        }, { passive: true });
+
+        // ==================== NEWSLETTER ====================
+        const newsletter = document.getElementById("newsletter");
+        const newsletterMsg = document.getElementById("newsletterMsg");
+        const emailInput = document.getElementById("emailInput");
+
+        newsletter.addEventListener("submit", e => {
+            e.preventDefault();
+            newsletterMsg.classList.remove("hidden");
+            emailInput.value = "";
+        });
+
+        // ==================== SMOOTH ANCHOR ====================
+        document.querySelectorAll('a[href^="#"]').forEach(link => {
+            link.addEventListener("click", e => {
+                const target = document.querySelector(link.getAttribute("href"));
+
+                if (!target) return;
+
+                e.preventDefault();
+                target.scrollIntoView({ behavior: "smooth" });
+            });
+        });
+    </script>
+</body>
+</html>

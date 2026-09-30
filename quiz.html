@@ -1,0 +1,524 @@
+<!doctype html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz - Emergency Basics</title>
+
+    <link href="./src/output.css" rel="stylesheet">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.6.0/fonts/remixicon.css" rel="stylesheet">
+</head>
+
+<body class="min-h-screen bg-white font-['Poppins'] text-[#111]">
+
+    <main class="relative flex min-h-screen items-center justify-center overflow-hidden bg-white px-6 py-12 md:px-[6%]">
+
+        <!-- Background Decorations -->
+        <div class="pointer-events-none absolute -left-20 -top-24 h-64 w-64 rounded-full bg-[#ffdfc4]/80 blur-[90px]"></div>
+        <div class="pointer-events-none absolute -right-20 -top-24 h-64 w-64 rounded-full bg-[#e5d5ff]/80 blur-[90px]"></div>
+        <div class="pointer-events-none absolute -bottom-36 right-[10%] h-96 w-96 rounded-full bg-[#b4f6d8]/80 blur-[100px]"></div>
+
+        <div class="relative z-10 grid w-full max-w-[1050px] grid-cols-1 items-center gap-10 lg:grid-cols-[0.8fr_1.45fr] lg:gap-[90px]">
+
+            <!-- LEFT SECTION -->
+            <section class="animate-fade-up max-w-[360px]">
+                <span class="inline-flex rounded-full border border-[#2515ff] bg-[#e8e7ff] px-3 py-1 text-sm leading-5 text-[#2515ff]">
+                    Kuis
+                </span>
+
+                <h1 class="mt-6 mb-6 text-[36px] leading-[1.2] font-semibold tracking-[-1.5px] sm:text-[46px]">
+                    Yuk, Cek<br>
+                    Seberapa <span class="text-[#2515ff]">Tahu</span><br>
+                    Kamu!
+                </h1>
+
+                <p class="max-w-[310px] text-xs leading-[1.4] text-[#666]">
+                    Apa kamu tahu apa yang harus dilakukan dalam situasi darurat? Uji pengetahuan pertolongan pertama dengan beberapa quiz menarik.
+                </p>
+
+                <!-- STATS -->
+                <div class="mt-7 flex gap-3">
+
+                    <div class="flex h-16 w-[90px] flex-col items-center justify-center rounded-lg bg-white shadow-[1px_3px_3px_#00000024]">
+                        <small class="text-[9px]">Jawabanku</small>
+                        <div class="text-[25px] leading-tight font-semibold">
+                            <span id="current-number">1</span><span class="text-base font-normal text-[#999]">/3</span>
+                        </div>
+                    </div>
+
+                    <div class="flex h-16 w-[90px] flex-col items-center justify-center rounded-lg bg-white shadow-[1px_3px_3px_#00000024]">
+                        <small class="text-[9px]">Poinmu</small>
+                        <div class="text-[23px] leading-tight font-semibold text-[#2515ff]">
+                            <span id="score">0</span> Pts
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- RIGHT SECTION -->
+            <section id="quiz-card" class="animate-fade-up w-full rounded-[17px] bg-white/90 p-6 shadow-[0_12px_40px_rgba(0,0,0,0.08)] backdrop-blur-xl sm:p-[30px_34px]">
+
+                <div id="quiz-content">
+
+                    <!-- TOP -->
+                    <div class="mb-6 flex items-center justify-between">
+                        <small class="text-[11px] text-[#888]">Question</small>
+
+                        <div class="h-[5px] w-[65px] overflow-hidden rounded-full bg-[#e8e8e8]">
+                            <div id="progress-bar" class="h-full w-0 rounded-full bg-[#2515ff] transition-[width] duration-500 ease-out"></div>
+                        </div>
+                    </div>
+
+                    <!-- CATEGORY -->
+                    <span class="mb-5 inline-flex rounded-full border border-[#2515ff] bg-[#e8e7ff] px-[10px] py-[3px] text-[13px] leading-[18px] text-[#2515ff]">
+                        Emergency Basics
+                    </span>
+
+                    <!-- QUESTION -->
+                    <h2 id="question" class="mb-5 text-[18px] leading-[1.4] font-semibold tracking-[-0.4px] sm:text-[20px]">
+                        Apa yang harus kamu periksa dahulu saat menghadapi situasi darurat?
+                    </h2>
+
+                    <!-- ANSWERS -->
+                    <div id="answers" class="flex flex-col gap-[10px]"></div>
+
+                    <!-- BOTTOM -->
+                    <div class="mt-5 flex items-center justify-between gap-3">
+                        <p id="hint" class="text-xs leading-relaxed text-[#98a2b3]">
+                            Pilih jawaban yang menurutmu benar.
+                        </p>
+
+                        <button
+                            id="next-btn"
+                            type="button"
+                            disabled
+                            class="group flex shrink-0 items-center gap-2 rounded-[17px] bg-[#2515ed] px-4 py-[10px] text-[15px] text-white transition-all duration-200 hover:bg-[#1c0dc7] active:scale-95 disabled:cursor-not-allowed disabled:opacity-40"
+                        >
+                            <span id="next-text">Lanjut</span>
+                            <i id="next-icon" class="ri-arrow-right-line text-xl transition-transform duration-200 group-hover:translate-x-1"></i>
+                        </button>
+                    </div>
+
+                </div>
+
+                <!-- RESULT -->
+                <div id="result" class="hidden py-6 text-center animate-fade-up">
+
+                    <span class="mb-4 inline-flex rounded-full border border-[#2515ff] bg-[#e8e7ff] px-3 py-1 text-sm text-[#2515ff]">
+                        Quiz Completed
+                    </span>
+
+                    <h2 class="mb-3 text-2xl font-semibold">
+                        Quiz Selesai!
+                    </h2>
+
+                    <p class="mb-5 text-sm text-[#777]">
+                        Kamu sudah menyelesaikan semua pertanyaan.
+                    </p>
+
+                    <div class="mb-5 text-5xl font-semibold text-[#2515ff]">
+                        <span id="final-score">0</span>
+                        <span class="text-xl">Pts</span>
+                    </div>
+
+                    <p id="result-message" class="mb-6 text-sm text-[#777]"></p>
+
+                    <button
+                        id="restart-btn"
+                        type="button"
+                        class="inline-flex items-center gap-2 rounded-[17px] bg-[#2515ed] px-5 py-3 text-sm text-white transition-all duration-200 hover:bg-[#1c0dc7] active:scale-95"
+                    >
+                        Ulangi Quiz
+                        <i class="ri-refresh-line text-lg"></i>
+                    </button>
+
+                </div>
+
+            </section>
+
+        </div>
+    </main>
+
+    <!-- RESULT POPUP -->
+    <div
+        id="result-popup"
+        class="fixed inset-0 z-50 hidden items-center justify-center bg-black/20 px-6 backdrop-blur-md"
+        role="dialog"
+        aria-modal="true"
+    >
+        <div class="animate-fade-up w-full max-w-[372px] rounded-[20px] bg-[#f8f9fc] px-8 pb-8 pt-10 text-center shadow-[0_12px_40px_rgba(0,0,0,0.15)]">
+
+            <!-- MASKOT -->
+            <div class="relative mx-auto mb-6 flex h-[190px] w-full items-end justify-center">
+                <div class="absolute inset-x-8 top-6 bottom-0 rounded-full bg-[#2515ff]/25 blur-[40px]"></div>
+
+                <img
+                    id="popup-image"
+                    src=""
+                    alt="Maskot hasil quiz"
+                    class="relative h-full object-contain"
+                >
+            </div>
+
+            <h2 id="popup-title" class="mb-1 text-[24px] font-semibold tracking-[-0.5px]"></h2>
+
+            <p id="popup-desc" class="mx-auto mb-6 max-w-[260px] text-[13px] leading-[1.4] text-[#555]"></p>
+
+            <!-- STATISTICS -->
+            <div class="mb-7 flex justify-center gap-4">
+
+                <div class="flex h-16 w-[120px] flex-col items-center justify-center rounded-lg bg-white shadow-[1px_3px_3px_#00000024]">
+                    <small class="text-[9px]">Jawabanmu</small>
+                    <div class="text-[25px] leading-tight font-semibold">
+                        <span id="popup-correct">0</span><span class="text-base font-normal text-[#999]">/3</span>
+                    </div>
+                </div>
+
+                <div class="flex h-16 w-[120px] flex-col items-center justify-center rounded-lg bg-white shadow-[1px_3px_3px_#00000024]">
+                    <small class="text-[9px]">Poinmu</small>
+                    <div class="text-[23px] leading-tight font-semibold text-[#2515ff]">
+                        <span id="popup-score">0</span> Pts
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- ACTION BUTTONS -->
+            <div class="flex flex-col items-center gap-2">
+
+                <button
+                    id="popup-primary-btn"
+                    type="button"
+                    class="inline-flex w-[170px] items-center justify-center gap-2 rounded-full bg-[#2515ff] px-5 py-2 text-sm text-white transition-all duration-200 hover:bg-[#1c0dc7] active:scale-95"
+                >
+                    <span id="popup-primary-text"></span>
+                    <i id="popup-primary-icon" class="text-base"></i>
+                </button>
+
+                <a
+                    href=""
+                    class="inline-flex w-[170px] items-center justify-center gap-2 rounded-full bg-[#dfe1f5] px-5 py-2 text-sm text-[#344054] transition-all duration-200 hover:bg-[#d0d3ee] active:scale-95"
+                >
+                    Ke Beranda
+                    <i class="ri-home-4-line text-base"></i>
+                </a>
+
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        /* ==========================
+           DATA PERTANYAAN
+        ========================== */
+
+        const questions = [
+            {
+                question: "Apa yang harus kamu periksa dahulu saat menghadapi situasi darurat?",
+                options: [
+                    "Umur orang yang terluka",
+                    "Luka yang terlihat",
+                    "Keamanan lokasi kejadian",
+                    "Rumah sakit terdekat"
+                ],
+                answer: 2
+            },
+            {
+                question: "Apa yang harus dilakukan jika seseorang mengalami pendarahan hebat?",
+                options: [
+                    "Memberikan minum sebanyak mungkin",
+                    "Menekan luka dengan kain bersih",
+                    "Membiarkan luka terbuka",
+                    "Meminta korban berjalan"
+                ],
+                answer: 1
+            },
+            {
+                question: "Apa yang harus dilakukan jika seseorang tidak sadarkan diri dan tidak bernapas normal?",
+                options: [
+                    "Memberikan makanan",
+                    "Menyiram wajah dengan air",
+                    "Meninggalkan korban sendirian",
+                    "Meminta bantuan darurat dan mulai CPR jika terlatih"
+                ],
+                answer: 3
+            }
+        ];
+
+        /* ==========================
+           STATE QUIZ
+        ========================== */
+
+        let currentQuestion = 0;
+        let score = 0;
+        let answered = false;
+
+        /* ==========================
+           ELEMENTS
+        ========================== */
+
+        const questionElement = document.getElementById("question");
+        const answersElement = document.getElementById("answers");
+        const currentNumberElement = document.getElementById("current-number");
+        const scoreElement = document.getElementById("score");
+        const progressBar = document.getElementById("progress-bar");
+        const hintElement = document.getElementById("hint");
+
+        const nextButton = document.getElementById("next-btn");
+        const nextText = document.getElementById("next-text");
+        const nextIcon = document.getElementById("next-icon");
+
+        const quizContent = document.getElementById("quiz-content");
+        const resultElement = document.getElementById("result");
+
+        /* ==========================
+           TAMPILKAN PERTANYAAN
+        ========================== */
+
+        function showQuestion() {
+            answered = false;
+
+            const questionData = questions[currentQuestion];
+
+            // Update nomor soal
+            currentNumberElement.textContent = currentQuestion + 1;
+
+            // Update progress bar
+            const progress = ((currentQuestion + 1) / questions.length) * 100;
+            progressBar.style.width = `${progress}%`;
+
+            // Update pertanyaan
+            questionElement.textContent = questionData.question;
+
+            // Reset hint
+            hintElement.textContent = "Pilih jawaban yang menurutmu benar.";
+            hintElement.classList.remove("text-red-600", "text-green-600");
+            hintElement.classList.add("text-[#98a2b3]");
+
+            // Reset tombol lanjut
+            nextButton.disabled = true;
+            nextText.textContent = "Lanjut";
+            nextIcon.className = "ri-arrow-right-line text-xl transition-transform duration-200 group-hover:translate-x-1";
+
+            // Reset jawaban
+            answersElement.innerHTML = "";
+
+            // Buat tombol pilihan jawaban
+            questionData.options.forEach((option, index) => {
+                const button = document.createElement("button");
+
+                button.type = "button";
+                button.className = "answer-btn animate-answer-pop";
+                button.style.animationDelay = `${index * 60}ms`;
+
+                const letter = document.createElement("span");
+                letter.className = "answer-letter";
+                letter.textContent = String.fromCharCode(65 + index);
+
+                const text = document.createElement("span");
+                text.textContent = option;
+
+                button.append(letter, text);
+
+                button.addEventListener("click", () => {
+                    selectAnswer(index);
+                });
+
+                answersElement.appendChild(button);
+            });
+        }
+
+        /* ==========================
+           PILIH JAWABAN
+        ========================== */
+
+        function selectAnswer(selectedIndex) {
+            // Cegah jawaban dipilih berulang kali
+            if (answered) return;
+
+            answered = true;
+
+            const questionData = questions[currentQuestion];
+            const correctIndex = questionData.answer;
+            const answerButtons = answersElement.querySelectorAll(".answer-btn");
+
+            // Nonaktifkan seluruh pilihan
+            answerButtons.forEach((button) => {
+                button.disabled = true;
+            });
+
+            // Jawaban benar
+            if (selectedIndex === correctIndex) {
+                answerButtons[selectedIndex].classList.add("correct");
+
+                score += 10;
+                scoreElement.textContent = score;
+
+                hintElement.textContent = "Benar! Kamu mendapatkan 10 poin.";
+                hintElement.classList.remove("text-red-600");
+                hintElement.classList.add("text-green-600");
+            }
+
+            // Jawaban salah
+            else {
+                answerButtons[selectedIndex].classList.add("wrong");
+                answerButtons[correctIndex].classList.add("correct");
+
+                hintElement.textContent = "Kurang tepat! Jawaban yang benar berwarna hijau.";
+                hintElement.classList.remove("text-green-600");
+                hintElement.classList.add("text-red-600");
+            }
+
+            // Aktifkan tombol lanjut
+            nextButton.disabled = false;
+
+            // Ubah tombol di soal terakhir
+            if (currentQuestion === questions.length - 1) {
+                nextText.textContent = "Selesai";
+                nextIcon.className = "ri-check-line text-xl";
+            }
+        }
+
+        /* ==========================
+           PINDAH SOAL
+        ========================== */
+
+        nextButton.addEventListener("click", () => {
+            if (!answered) return;
+
+            // Jika masih ada pertanyaan berikutnya
+            if (currentQuestion < questions.length - 1) {
+                currentQuestion++;
+
+                quizContent.classList.add("animate-fade-out");
+
+                setTimeout(() => {
+                    showQuestion();
+
+                    quizContent.classList.remove("animate-fade-out");
+                    quizContent.classList.add("animate-fade-up");
+
+                    setTimeout(() => {
+                        quizContent.classList.remove("animate-fade-up");
+                    }, 600);
+                }, 200);
+            }
+
+            // Jika semua soal selesai
+            else {
+                showResult();
+            }
+        });
+
+        /* ==========================
+           HASIL AKHIR
+        ========================== */
+
+        function showResult() {
+            quizContent.classList.add("hidden");
+            resultElement.classList.remove("hidden");
+
+            document.getElementById("final-score").textContent = score;
+
+            const correctCount = score / 10;
+
+            document.getElementById("result-message").textContent =
+                `Kamu menjawab benar ${correctCount} dari ${questions.length} pertanyaan.`;
+
+            showResultPopup(correctCount);
+        }
+
+        /* ==========================
+           ULANG QUIZ
+        ========================== */
+
+        document.getElementById("restart-btn").addEventListener("click", () => {
+            currentQuestion = 0;
+            score = 0;
+            answered = false;
+
+            scoreElement.textContent = "0";
+            currentNumberElement.textContent = "1";
+            progressBar.style.width = "0%";
+
+            resultElement.classList.add("hidden");
+            quizContent.classList.remove("hidden");
+
+            nextText.textContent = "Lanjut";
+            nextIcon.className = "ri-arrow-right-line text-xl transition-transform duration-200 group-hover:translate-x-1";
+
+            showQuestion();
+        });
+
+        /* ==========================
+           MULAI QUIZ
+        ========================== */
+
+        showQuestion();
+
+        /* ==========================
+           POPUP HASIL
+        ========================== */
+
+        const popupElement = document.getElementById("result-popup");
+        const popupImage = document.getElementById("popup-image");
+        const popupTitle = document.getElementById("popup-title");
+        const popupDesc = document.getElementById("popup-desc");
+        const popupCorrect = document.getElementById("popup-correct");
+        const popupScore = document.getElementById("popup-score");
+        const popupPrimaryBtn = document.getElementById("popup-primary-btn");
+        const popupPrimaryText = document.getElementById("popup-primary-text");
+        const popupPrimaryIcon = document.getElementById("popup-primary-icon");
+
+        // Batas minimal jawaban benar supaya dianggap berhasil
+        const PASS_LIMIT = 2;
+
+        function showResultPopup(correctCount) {
+            popupCorrect.textContent = correctCount;
+            popupScore.textContent = score;
+
+            if (correctCount >= PASS_LIMIT) {
+                // Berhasil
+                popupImage.src = "assets/images/bear-success.png";
+                popupTitle.textContent = "Pelajar Selesai!";
+                popupDesc.textContent = "kamu sudah menyelesaikan pembelajaran tentang pingsan";
+                popupPrimaryText.textContent = "Selesai";
+                popupPrimaryIcon.className = "ri-check-line text-base";
+
+                popupPrimaryBtn.onclick = closeResultPopup;
+            } else {
+                // Belum berhasil
+                popupImage.src = "assets/images/bear-retry.png";
+                popupTitle.textContent = "Yuk Coba Lagi";
+                popupDesc.textContent = "Ayo kita coba lagi pelajaran tentang pingsan";
+                popupPrimaryText.textContent = "Coba Lagi";
+                popupPrimaryIcon.className = "ri-refresh-line text-base";
+
+                popupPrimaryBtn.onclick = () => {
+                    closeResultPopup();
+                    document.getElementById("restart-btn").click();
+                };
+            }
+
+            // Tampilkan popup
+            popupElement.classList.remove("hidden");
+            popupElement.classList.add("flex");
+        }
+
+        function closeResultPopup() {
+            popupElement.classList.remove("flex");
+            popupElement.classList.add("hidden");
+        }
+    </script>
+
+</body>
+
+</html>

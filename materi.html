@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Materi Belajar - First Aid</title>
+
+  <!-- tailwind CSS -->
+  <link href="./src/output.css" rel="stylesheet" />
+
+  <!-- google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- remix Icon -->
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.6.0/fonts/remixicon.css" rel="stylesheet" />
+</head>
+
+<body class="min-h-screen bg-white font-['Poppins'] text-black">
+  <main class="relative min-h-screen overflow-hidden bg-white px-6 py-8 sm:px-10 lg:px-[5.6%]">
+    <!-- bg gradient -->
+    <div class="pointer-events-none absolute -left-20 -top-24 h-64 w-64 rounded-full bg-[#ffdfc4]/80 blur-[90px]"></div>
+    <div class="pointer-events-none absolute -right-20 -top-24 h-70 w-70 rounded-full bg-[#e5d5ff]/80 blur-[90px]"></div>
+    <div class="pointer-events-none absolute -bottom-32 right-[1%] h-100 w-100 rounded-full bg-[#b4f6d8]/80 blur-[100px]"></div>
+
+    <!-- content -->
+    <section class="mt-6 relative z-10 mx-auto w-full max-w-[1400px]">
+      <header class="animate-fade-up flex flex-col items-center text-center">
+        <span class="inline-flex rounded-full border border-[#2515ff] bg-[#e8e7ff] px-3 py-1 text-sm leading-5 text-[#2515ff]">
+          Materi
+        </span>
+
+        <h1 id="materi-title" class="mt-5 text-3xl leading-tight font-semibold tracking-[-1px] sm:text-[40px]">
+          Kecelakaan di Jalan
+        </h1>
+      </header>
+
+      <!-- video section -->
+      <section class="mt-10 sm:mt-12">
+        <div class="animate-fade-up relative h-[min(100vw,500px)] min-h-[300px] w-full overflow-hidden rounded-[14px] bg-[#d9d9d9] shadow-sm sm:min-h-[300px]">
+          <!-- youTube Video -->
+          <iframe
+            id="youtube-video"
+            class="absolute inset-0 h-full w-full"
+            src="`https://www.youtube-nocookie.com/embed/${encodeURIComponent(videoId)}?controls=1&playsinline=1&rel=0&modestbranding=1`;"
+            title="Video Materi First Aid"
+            frameborder="0"
+            allow="
+              accelerometer;
+              autoplay;
+              clipboard-write;
+              encrypted-media;
+              gyroscope;
+              picture-in-picture;
+              web-share;
+            "
+            referrerpolicy="strict-origin-when-cross-origin"
+            allowfullscreen
+          ></iframe>
+        </div>
+
+        <!-- video source -->
+        <div class="mt-8 flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
+          <p class="text-[10px] leading-relaxed text-[#555] sm:text-[11px]">
+            Sumber video:
+            <a id="video-source" href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer" class="transition-colors hover:text-[#2515ff]">
+              Ini Kata Dokter — YouTube
+            </a>. Hak cipta milik pemilik asli.
+          </p>
+
+          <!-- next btn -->
+          <button
+            id="next-btn"
+            type="button"
+            class="group flex w-fit items-center justify-center gap-2 self-end rounded-[15px] bg-[#2515ed] px-4 py-[9px] text-sm text-white transition-all duration-200 hover:bg-[#1c0dc7] active:scale-95"
+          >
+            Lanjut
+            <i class="ri-arrow-right-line text-xl transition-transform duration-200 group-hover:translate-x-1"></i>
+          </button>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <!-- js -->
+  <script>
+    // data yang mau ditampilkan di halaman materi
+    const materi = {
+      judul: "Kecelakaan di Jalan",
+      linkVideo: "https://youtu.be/Oy7kqUjIhIk",
+      namaChannel: "Ini Kata Dokter",
+      halamanQuiz: "quiz.html"
+    };
+
+    // ambil bagian halamaan yang mau diubah
+    const judul = document.getElementById("materi-title");
+    const video = document.getElementById("youtube-video");
+    const sumber = document.getElementById("video-source");
+    const tombolLanjut = document.getElementById("next-btn");
+
+    // ambil kode video dari link youtube
+    function ambilIdVideo(link) {
+      try {
+        const url = new URL(link);
+
+        // kalau linknya youtube.com/watch?v=...
+        if (url.hostname.includes("youtube.com")) {
+          return url.searchParams.get("v");
+        }
+
+        // kalau linknya youtu.be/...
+        if (url.hostname === "youtu.be") {
+          return url.pathname.slice(1);
+        }
+
+        return null;
+      } catch {
+        return null;
+      }
+    }
+
+    // judul, video, dan sumbernya
+    function tampilkanMateri() {
+      const idVideo = ambilIdVideo(materi.linkVideo);
+
+      // ganti judul materi
+      judul.textContent = materi.judul;
+
+      // tampilkan nama channel dan link sumber video
+      sumber.textContent = materi.namaChannel + " — YouTube";
+      sumber.href = materi.linkVideo;
+
+      // tampilkan video youtube
+      if (idVideo) {
+        video.src =
+          `https://www.youtube-nocookie.com/embed/${idVideo}?controls=1&playsinline=1&rel=0&modestbranding=1`;
+      } else {
+        console.log("Link video youtube tidak valid.");
+      }
+    }
+
+    // kalau tombol lanjut diklik, buka halaman quiz
+    tombolLanjut.addEventListener("click", function () {
+      window.location.href = materi.halamanQuiz;
+    });
+
+    // jalankan saat halaman dibuka
+    tampilkanMateri();
+  </script>
+</body>
+</html>
