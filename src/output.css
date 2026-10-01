@@ -1060,12 +1060,6 @@
   .text-left {
     text-align: left;
   }
-  .font-\[\'Poppins\'\] {
-    font-family: 'Poppins';
-  }
-  .font-\[\'Urbanist\'\] {
-    font-family: 'Urbanist';
-  }
   .font-urbanist {
     font-family: var(--font-urbanist);
   }
